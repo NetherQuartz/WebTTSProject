@@ -24,7 +24,7 @@ def generate_audio_card(hash: str, text: str) -> str:
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{text}</h5>
-                <audio controls="true"><source src="http://$host$/wav/{hash}" type="audio/wav" preload="none"></audio>
+                <audio controls="true"><source src="http://$host$/audio/{hash}" type="audio/mpeg" preload="none"></audio>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@ def generate_and_save(query: GenerateAndSaveQuery) -> str:
     return text_hash
 
 
-@app.get("/wav/{hash}", response_class=StreamingResponse)
+@app.get("/audio/{hash}", response_class=StreamingResponse)
 def send_wav(hash: str) -> StreamingResponse:
 
     with SESSION_MAKER() as session:
@@ -71,7 +71,7 @@ def send_wav(hash: str) -> StreamingResponse:
         row: WAVs = session.execute(sql.select(WAVs).where(WAVs.hash == hash)).scalar()
         file = BytesIO(initial_bytes=row.binary)
 
-    return StreamingResponse(file, media_type="audio/wav")
+    return StreamingResponse(file, media_type="audio/mpeg")
 
 
 @app.get("/res/{file}", response_class=FileResponse)

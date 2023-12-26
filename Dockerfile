@@ -7,6 +7,7 @@ ENV TZ Europe/Moscow
 ADD requirements.txt .
 
 RUN apt-get update && \
+    apt-get install -y ffmpeg && \
     pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives

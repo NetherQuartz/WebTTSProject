@@ -39,8 +39,8 @@
             card_body.appendChild(text_h5)
             card_body.appendChild(audio);
 
-            source_element.setAttribute("src", "http://" + window.location.host + "/wav/" + path);
-            source_element.setAttribute("type", "audio/wav");
+            source_element.setAttribute("src", "http://" + window.location.host + "/audio/" + path);
+            source_element.setAttribute("type", "audio/mpeg");
             source_element.setAttribute("preload", "none");
 
             audio.appendChild(source_element);

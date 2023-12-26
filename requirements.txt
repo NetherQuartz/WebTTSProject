@@ -7,3 +7,4 @@ num2words
 pydantic
 sqlalchemy
 psycopg2-binary
+pydub

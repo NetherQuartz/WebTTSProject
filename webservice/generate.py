@@ -7,6 +7,7 @@ from io import BytesIO
 from scipy.io import wavfile
 from transliterate import translit
 from num2words import num2words
+from pydub import AudioSegment
 
 
 model, _ = torch.hub.load(
@@ -58,8 +59,12 @@ def speak(text: str, sample_rate=48000) -> BytesIO:
         put_yo=True
     )
 
-    mem_file = BytesIO()
-    wavfile.write(mem_file, sample_rate, audio.numpy())
-    mem_file.seek(0)
+    wav_file = BytesIO()
+    wavfile.write(wav_file, sample_rate, audio.numpy())
+    wav_file.seek(0)
 
-    return mem_file
+    mp3_file = BytesIO()
+    AudioSegment.from_file(wav_file).export(mp3_file, format="mp3")
+    mp3_file.seek(0)
+
+    return mp3_file
