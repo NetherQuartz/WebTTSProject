@@ -18,10 +18,28 @@ class GenerateAndSaveQuery(BaseModel):
     text: str
 
 
+def generate_audio_card(hash: str, text: str) -> str:
+    return f"""
+    <div class="my-col col-xs-6 col-md-4 col-lg-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{text}</h5>
+                <audio controls="true"><source src="http://$host$/wav/{hash}" type="audio/wav" preload="none"></audio>
+            </div>
+        </div>
+    </div>
+    """
+
+
 @app.get("/", response_class=HTMLResponse)
 def index() -> str:
+
+    with SESSION_MAKER() as session:
+        entries = session.query(WAVs).order_by(WAVs.created_at.desc()).all()
+        audios = [generate_audio_card(e.hash, e.text) for e in entries]
+
     with open(os.path.join("web-resources", "index.html")) as f:
-        return f.read()
+        return f.read().replace("{{ div_content }}", "\n".join(audios))
 
 
 @app.post("/generate")

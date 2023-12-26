@@ -16,8 +16,12 @@
             width: 100%;
         }
 
-        .col-sm-6 {
+        .my-col {
             padding: 5px 5px 5px 5px;
+        }
+
+        audio {
+            width: 100%;
         }
     </style>
     <script>
@@ -47,7 +51,7 @@
             card.appendChild(card_body);
             
             var col = document.createElement("div");
-            col.setAttribute("class", "col-sm-6");
+            col.setAttribute("class", "my-col col-xs-6 col-md-4 col-lg-2");
             col.appendChild(card);
 
             container.prepend(col);
@@ -86,5 +90,13 @@
         });
     </script>
 
-    <div class="row" id="audio_container"></div>
+    <div class="row" id="audio_container">{{ div_content }}</div>
+
+    <script>
+        const cards = document.getElementsByClassName("card-body");
+        for (var i = 0; i < cards.length; i++) {
+            var source_obj = cards[i].children[1].children[0];
+            source_obj.src = source_obj.src.replace("$host$", window.location.host);
+        }
+    </script>
 </body>
