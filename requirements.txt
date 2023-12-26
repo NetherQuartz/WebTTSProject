@@ -1,0 +1,9 @@
+omegaconf
+scipy
+transliterate
+fastapi
+uvicorn
+num2words
+pydantic
+sqlalchemy
+psycopg2-binary

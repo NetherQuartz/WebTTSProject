@@ -1,0 +1,37 @@
+version: "3.2"
+
+services:
+  tts_service:
+    build: .
+    container_name: tts-service
+    restart: always
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres-database:
+        condition: service_healthy
+
+  postgres-database:
+    image: postgres:alpine
+    container_name: tts-postgres
+    restart: always
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - PGDATA=/dbdata
+      - TZ=Europe/Moscow
+    volumes:
+      - "./.dbdata:/dbdata:rw"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
